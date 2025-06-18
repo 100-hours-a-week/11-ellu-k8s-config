@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: looper-prod
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 1500m
+              memory: 1024Mi
+          image: ghcr.io/100-hours-a-week/11-ellu-be:latest
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            #graceful shutdown을 위한 SIGTERM메세지 보내기 전에, schduler에게 5초 기다리라고 명령어 입력
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 5"]
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BPL_JVM_THREAD_COUNT
+              value: "50"
