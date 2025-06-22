@@ -64,21 +64,16 @@ spec:
             - name: zookeeper-logs
               mountPath: /var/lib/zookeeper/log
           readinessProbe:
-            exec:
-              command:
-                - sh
-                - -c
-                - "echo ruok | nc localhost 2181 | grep imok"
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            exec:
-              command:
-                - sh
-                - -c
-                - "echo ruok | nc localhost 2181 | grep imok"
+            tcpSocket:
+              port: 2181
             initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 2181
+            initialDelaySeconds: 60
             periodSeconds: 30
+            
   volumeClaimTemplates:
     - metadata:
         name: zookeeper-data
