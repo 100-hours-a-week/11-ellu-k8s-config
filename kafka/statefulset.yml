@@ -1,3 +1,4 @@
+kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -27,6 +28,19 @@ spec:
                 sleep 2
               done
               echo "Zookeeper is ready!"
+        - name: fix-kafka-permissions
+          image: busybox:1.35
+          command: ['sh', '-c']
+          args:
+            - |
+              mkdir -p /bitnami/kafka
+              chown -R 1001:1001 /bitnami/kafka
+              chmod -R 755 /bitnami/kafka
+          volumeMounts:
+            - name: kafka-data
+              mountPath: /bitnami/kafka
+          securityContext:
+            runAsUser: 0
       containers:
         - name: kafka
           image: bitnami/kafka:3.6
@@ -51,6 +65,10 @@ spec:
           volumeMounts:
             - name: kafka-data
               mountPath: /bitnami/kafka
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
           resources:
             requests:
               cpu: 250m
