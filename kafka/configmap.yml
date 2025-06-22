@@ -4,7 +4,7 @@ metadata:
   name: kafka-config
   namespace: looper-prod
 data:
-  kafka.properties: |
+  server.properties: |
     # Basic Kafka Configuration
     broker.id=0
     log.dirs=/var/lib/kafka/data
@@ -19,7 +19,7 @@ data:
     listener.security.protocol.map=PLAINTEXT:PLAINTEXT
     inter.broker.listener.name=PLAINTEXT
     
-    # Topic Configuration
+    # Performance Configuration
     num.network.threads=3
     num.io.threads=8
     socket.send.buffer.bytes=102400
