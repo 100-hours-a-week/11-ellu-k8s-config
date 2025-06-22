@@ -23,8 +23,10 @@ spec:
           args:
             - |
               mkdir -p /var/kafka-logs
+              rm -rf /var/kafka-logs/lost+found
               chown -R 1000:1000 /var/kafka-logs
               chmod -R 755 /var/kafka-logs
+              echo "Cleaned up /var/kafka-logs"
               ls -la /var/kafka-logs
           volumeMounts:
             - name: kafka-data
