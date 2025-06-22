@@ -17,27 +17,6 @@ spec:
         app: kafka
     spec:
       initContainers:
-        - name: fix-permissions
-          image: busybox:1.35
-          command: ['sh', '-c']
-          args:
-            - |
-              mkdir -p /var/lib/kafka/data /var/log/kafka
-              chown -R 1000:1000 /var/lib/kafka/data
-              chmod -R 755 /var/lib/kafka/data
-              chown -R 1000:1000 /var/log/kafka
-              chmod -R 755 /var/log/kafka
-              
-              # Clean up any KRaft metadata that might exist
-              rm -f /var/lib/kafka/data/meta.properties
-              rm -rf /var/lib/kafka/data/__cluster_metadata*
-          volumeMounts:
-            - name: kafka-data
-              mountPath: /var/lib/kafka/data
-            - name: kafka-logs
-              mountPath: /var/log/kafka
-          securityContext:
-            runAsUser: 0
         - name: wait-for-zookeeper
           image: busybox:1.35
           command: ['sh', '-c']
@@ -54,27 +33,24 @@ spec:
           ports:
             - containerPort: 29092
               name: internal
-            - containerPort: 9092
-              name: external
           env:
-            - name: KAFKA_CFG_FILE
-              value: "/etc/kafka/server.properties"
-          command:
-            - sh
-            - -exc
-            - |
-              /usr/bin/kafka-server-start /etc/kafka/server.properties
+            - name: KAFKA_BROKER_ID
+              value: "0"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "zookeeper.looper-prod.svc.cluster.local:2181"
+            - name: KAFKA_LISTENERS
+              value: "PLAINTEXT://0.0.0.0:29092"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "PLAINTEXT://kafka-0.kafka-headless.looper-prod.svc.cluster.local:29092"
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_AUTO_CREATE_TOPICS_ENABLE
+              value: "true"
+            - name: KAFKA_LOG4J_ROOT_LOGLEVEL
+              value: "INFO"
           volumeMounts:
             - name: kafka-data
               mountPath: /var/lib/kafka/data
-            - name: kafka-logs
-              mountPath: /var/log/kafka
-            - name: kafka-config
-              mountPath: /etc/kafka
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
           resources:
             requests:
               cpu: 250m
@@ -85,21 +61,13 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 29092
-            initialDelaySeconds: 45
+            initialDelaySeconds: 60
             periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
           livenessProbe:
             tcpSocket:
               port: 29092
-            initialDelaySeconds: 90
+            initialDelaySeconds: 120
             periodSeconds: 30
-            timeoutSeconds: 5
-            failureThreshold: 3
-      volumes:
-        - name: kafka-config
-          configMap:
-            name: kafka-config
   volumeClaimTemplates:
     - metadata:
         name: kafka-data
@@ -109,11 +77,3 @@ spec:
         resources:
           requests:
             storage: 10Gi
-    - metadata:
-        name: kafka-logs
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: ebs-sc
-        resources:
-          requests:
-            storage: 2Gi
