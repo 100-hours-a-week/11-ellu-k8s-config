@@ -48,7 +48,7 @@ spec:
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
               value: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://kafka-0.kafka-headless.looper-prod.svc.cluster.local:29092,PLAINTEXT_HOST://kafka.looper-prod.svc.cluster.local:9092"
+              value: "PLAINTEXT://kafka-0.kafka-headless.looper-prod.svc.cluster.local:29092"
             - name: KAFKA_LISTENERS
               value: "PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092"
             - name: KAFKA_INTER_BROKER_LISTENER_NAME
@@ -76,7 +76,7 @@ spec:
               command:
                 - sh
                 - -c
-                - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:29092"
+                - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092"
             initialDelaySeconds: 60 
             periodSeconds: 10
           livenessProbe:
@@ -84,7 +84,7 @@ spec:
               command:
                 - sh
                 - -c
-                - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:29092"
+                - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092"
             initialDelaySeconds: 120  
             periodSeconds: 30
   volumeClaimTemplates:
