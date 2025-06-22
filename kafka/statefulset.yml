@@ -76,7 +76,7 @@ spec:
               command:
                 - sh
                 - -c
-                - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092"
+                - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:29092"
             initialDelaySeconds: 60 
             periodSeconds: 10
           livenessProbe:
@@ -84,7 +84,7 @@ spec:
               command:
                 - sh
                 - -c
-                - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092"
+                - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:29092"
             initialDelaySeconds: 120  
             periodSeconds: 30
   volumeClaimTemplates:
