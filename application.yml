@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: looper-prod-application
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
+      targetRevision: HEAD
+      path: backend
+    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
+      targetRevision: HEAD
+      path: frontend
+    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
+      targetRevision: HEAD
+      path: ai-chatbot
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: looper-prod
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
