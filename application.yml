@@ -11,6 +11,12 @@ spec:
       path: .
     - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
       targetRevision: HEAD
+      path: zookeeper
+    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
+      targetRevision: HEAD
+      path: kafka
+    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
+      targetRevision: HEAD
       path: backend
     - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
       targetRevision: HEAD
@@ -18,7 +24,7 @@ spec:
     - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
       targetRevision: HEAD
       path: ai-chatbot
-      
+
   destination:
     server: https://kubernetes.default.svc
     namespace: looper-prod
