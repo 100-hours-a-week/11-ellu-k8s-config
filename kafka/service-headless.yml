@@ -10,7 +10,7 @@ spec:
   selector:
     app: kafka
   ports:
-    - port: 29092
-      name: internal
     - port: 9092
-      name: external
+      name: kafka
+    - port: 9093
+      name: controller
