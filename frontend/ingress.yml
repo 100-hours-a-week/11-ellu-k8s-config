@@ -4,6 +4,14 @@ metadata:
   name: looper-ingress
   namespace: looper-prod
   annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Connection "";
+      proxy_http_version 1.1;
+      proxy_cache_bypass $http_upgrade;
+      chunked_transfer_encoding off;
 spec:
   ingressClassName: nginx
   rules:
