@@ -5,19 +5,17 @@ metadata:
   namespace: looper-prod
   annotations:
     kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/use-regex: "false"
-    
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "60" 
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
-    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-    
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-
 spec:
+  tls:
+    - hosts:
+        - dev.looper.my
+      secretName: looper-tls  
   rules:
-    - http:
+    - host: dev.looper.my
+      http:
         paths:
           - path: /api
             pathType: Prefix
@@ -33,39 +31,3 @@ spec:
                 name: frontend
                 port:
                   number: 80
-# =============================================================================
-# HTTPS
-# =============================================================================
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: looper-ingress-tls
-#   namespace: looper-prod
-#   annotations:
-#     kubernetes.io/ingress.class: nginx
-#     cert-manager.io/cluster-issuer: letsencrypt-prod
-#     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-#     nginx.ingress.kubernetes.io/rewrite-target: /
-# spec:
-#   tls:
-#   - hosts:
-#     - looper.my
-#     secretName: looper-tls
-#   rules:
-#   - host: looper.my
-#     http:
-#       paths:
-#       - path: /api
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: backend
-#             port:
-#               number: 80
-#       - path: /
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: frontend
-#             port:
-#               number: 80
