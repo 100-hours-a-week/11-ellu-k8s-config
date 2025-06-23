@@ -22,7 +22,7 @@ spec:
           image: ghcr.io/100-hours-a-week/11-ellu-fe:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           resources:
             requests:
               cpu: 100m
