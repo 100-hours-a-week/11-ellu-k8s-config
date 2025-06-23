@@ -4,7 +4,6 @@ metadata:
   name: looper-ingress
   namespace: looper-prod
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
