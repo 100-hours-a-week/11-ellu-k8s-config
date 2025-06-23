@@ -20,7 +20,7 @@ spec:
       containers:
         - name: frontend
           image: ghcr.io/100-hours-a-week/11-ellu-fe:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always #IfNotPresent 개발 서버는 태그 관리 x latest로 항상 최신 이미지 사용
           ports:
             - containerPort: 3000
           resources:
