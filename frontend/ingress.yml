@@ -4,16 +4,9 @@ metadata:
   name: looper-ingress
   namespace: looper-prod
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    # nginx.ingress.kubernetes.io/rewrite-target: /
-    acme.cert-manager.io/http01-edit-in-place: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - dev.looper.my
-      secretName: looper-tls  
   rules:
     - host: dev.looper.my
       http:
