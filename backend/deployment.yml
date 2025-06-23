@@ -74,7 +74,7 @@ spec:
                   name: backend-secrets
                   key: kakao-rest-api-key
             - name: KAKAO_REDIRECT_URI
-              value: "https://looper.my/auth/kakao/callback"
+              value: "https://dev.looper.my/auth/kakao/callback"
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
