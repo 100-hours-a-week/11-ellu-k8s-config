@@ -10,10 +10,10 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
     nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Connection "";
+      proxy_set_header Upgrade $http_upgrade;
       proxy_http_version 1.1;
+      proxy_set_header Connection $connection_upgrade;
       proxy_cache_bypass $http_upgrade;
-      proxy_cache off;
       add_header 'Access-Control-Allow-Origin' 'https://dev.looper.my' always;
       add_header 'Access-Control-Allow-Credentials' 'true' always;
 spec:
