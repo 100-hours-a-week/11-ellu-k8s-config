@@ -87,7 +87,7 @@ spec:
             - name: FASTAPI_CHATBOT_URL
               value: "http://ai-chatbot.looper-prod.svc.cluster.local"
             - name: KAFKA_BASE_URL
-              value: "kafka-0.kafka-headless.looper-prod.svc.cluster.local:9092"
+              value: "kafka.looper-prod.svc.cluster.local:9092"
             # OpenTelemetry
             # - name: OTEL_SERVICE_NAME
             #   value: "looper-backend"
