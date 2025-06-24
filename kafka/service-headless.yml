@@ -11,6 +11,7 @@ spec:
     app: kafka
   ports:
     - port: 9092
+      targetPort: 9092
       name: kafka
     - port: 9093
       name: controller
