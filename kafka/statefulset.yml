@@ -16,6 +16,13 @@ spec:
       labels:
         app: kafka
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/kafka: reserved
+      tolerations:
+        - key: "node-role.kubernetes.io/kafka"
+          operator: "Equal"
+          value: "reserved"
+          effect: "NoSchedule"
       initContainers:
         - name: fix-permissions
           image: busybox:1.35
