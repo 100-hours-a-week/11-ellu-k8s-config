@@ -18,7 +18,7 @@ spec:
       nodeSelector:
         cloud-provider: gcp
       tolerations:
-        - key: "nvidia.com/gpu"
+        - key: "gpu"
           operator: "Equal"
           value: "true" 
           effect: "NoSchedule"
