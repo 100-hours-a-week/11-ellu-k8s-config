@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-summary
+  namespace: looper-prod
+  labels:
+    app: ai-summary
+spec:
+  type: ClusterIP
+  selector:
+    app: ai-summary
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

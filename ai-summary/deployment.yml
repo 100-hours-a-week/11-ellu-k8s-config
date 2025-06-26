@@ -1,0 +1,137 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-summary
+  namespace: looper-prod
+  labels:
+    app: ai-summary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-summary
+  template:
+    metadata:
+      labels:
+        app: ai-summary
+    spec:
+      nodeSelector:
+        cloud-provider: gcp
+      tolerations:
+        - key: "nvidia.com/gpu"
+          operator: "Equal"
+          value: "true" 
+          effect: "NoSchedule"
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: ai-summary
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1512Mi
+          image: ghcr.io/100-hours-a-week/11-ellu-ai-summary:latest
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 5"]
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: openai-api-key
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: secret-key
+            - name: LANGCHAIN_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: langchain-api-key
+            - name: LANGCHAIN_TRACING_V2
+              value: "true"
+            - name: LANGCHAIN_PROJECT
+              value: "looper-llm1"
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: TAVILY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: tavily-api-key
+            - name: HUGGINGFACE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: huggingface-api-key
+            - name: CHROMA_HOST
+              value: "10.0.0.2"
+            - name: CHROMA_PORT
+              value: "8000"
+            - name: BE_URL
+              value: "http://backend.looper-prod.svc.cluster.local"
+            - name: LANGSMITH_TRACING
+              value: "true"
+            - name: LANGSMITH_ENDPOINT
+              value: "https://api.smith.langchain.com"
+            - name: LANGSMITH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: langsmith-api-key
+            - name: GIT_PYTHON_REFRESH
+              value: "quiet"
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: aws-access-key
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: aws-secret-key
+            - name: S3_BUCKET_NAME
+              value: "looper-dev-repos-s3"
+            - name: AWS_REGION
+              value: "ap-northeast-2"
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ai-summary-secrets
+                  key: github-token
+            # OpenTelemetry
+            # - name: OTEL_SERVICE_NAME
+            #   value: "looper-ai"
+            # - name: OTEL_SERVICE_VERSION
+            #   value: "1.0.0"
+            # - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            #   value: "http://otel-collector:4318"
+            # - name: OTEL_EXPORTER_OTLP_PROTOCOL
+            #   value: "http/protobuf"
+            # - name: OTEL_RESOURCE_ATTRIBUTES
+            #   value: "service.name=looper-ai,service.version=1.0.0,service.namespace=looper,deployment.environment=production"
+            # - name: OTEL_METRICS_EXPORTER
+            #   value: "otlp"
+            # - name: OTEL_TRACES_EXPORTER
+            #   value: "otlp"
+            # - name: OTEL_LOGS_EXPORTER
+            #   value: "otlp"
+            # - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+            #   value: "true"
+            # - name: OTEL_TRACES_SAMPLER
+            #   value: "traceidratio"
+            # - name: OTEL_TRACES_SAMPLER_ARG
+            #   value: "1.0"
+            # - name: OTEL_SEMCONV_STABILITY_OPT_IN
+            #   value: "http"
+            # - name: OTEL_PYTHON_DISABLED_INSTRUMENTATIONS
+            #   value: "urllib3"
+            # - name: OTEL_PYTHON_LOG_CORRELATION
+            #   value: "true"
