@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chromadb
+  namespace: looper-prod
+  labels:
+    app: chromadb
+spec:
+  type: ClusterIP
+  selector:
+    app: chromadb
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
