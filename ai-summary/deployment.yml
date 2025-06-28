@@ -71,7 +71,7 @@ spec:
                   name: ai-summary-secrets
                   key: huggingface-api-key
             - name: CHROMA_HOST
-              value: "10.0.0.2"
+              value: "chromadb.looper-prod.svc.cluster.local"
             - name: CHROMA_PORT
               value: "8000"
             - name: BE_URL
