@@ -33,6 +33,19 @@ spec:
           image: ghcr.io/100-hours-a-week/11-ellu-ai-summary-service:latest
           imagePullPolicy: Always
           lifecycle:
+            postStart:
+              exec:
+                command:
+                  - sh
+                  - -c
+                  - |
+                    echo "[WARMUP] 호출 중...";
+                    for i in $(seq 1 10); do
+                      curl -s http://localhost:8080/warmup && echo "[WARMUP] 완료" && exit 0;
+                      echo "[WARMUP] 실패, 재시도 $i";
+                      sleep 2;
+                    done;
+                    echo "[WARMUP] 실패";
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "sleep 5"]
