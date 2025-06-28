@@ -31,16 +31,54 @@ spec:
             - containerPort: 8000
               name: http
           env:
+            - name: IS_PERSISTENT
+              value: "TRUE"
+            - name: PERSIST_DIRECTORY
+              value: "/chroma/chroma"
             - name: CHROMA_HOST
               value: "0.0.0.0"
             - name: CHROMA_PORT
               value: "8000"
             - name: CHROMA_DB_IMPL
               value: "duckdb+parquet"
-            - name: CHROMA_PERSIST_DIRECTORY
-              value: "/chroma/chroma"
             - name: CHROMA_SERVER_CORS_ALLOW_ORIGINS
-              value: '["*"]'
+              value: "*"
+            - name: ANONYMIZED_TELEMETRY
+              value: "FALSE"
+            - name: CHROMA_SERVER_HOST
+              value: "0.0.0.0"
+            - name: CHROMA_SERVER_HTTP_PORT
+              value: "8000"
+            - name: CHROMA_SERVER_GRPC_PORT
+              value: "50051"
+            - name: CHROMA_OTEL_EXPORTER_ENDPOINT
+              value: ""
+            - name: CHROMA_OTEL_EXPORTER_HEADERS
+              value: ""
+            - name: CHROMA_OTEL_SERVICE_NAME
+              value: "chromadb"
+            - name: CHROMA_SEGMENT_CACHE_POLICY
+              value: "LRU"
+            - name: CHROMA_SEGMENT_CACHE_SIZE_MB
+              value: "1024"
+            - name: CHROMA_PRODUCER_IMPL
+              value: "chromadb.ingest.impl.simple.SimpleProducerImplementation"
+            - name: CHROMA_CONSUMER_IMPL
+              value: "chromadb.ingest.impl.simple.SimpleConsumerImplementation"
+            - name: CHROMA_SEGMENT_MANAGER_IMPL
+              value: "chromadb.segment.impl.manager.local.LocalSegmentManager"
+            - name: CHROMA_SQLITE_DATABASE
+              value: ":memory:"
+            - name: CHROMA_SQLITE_SYNCHRONOUS
+              value: "OFF"
+            - name: CHROMA_SQLITE_JOURNAL_MODE
+              value: "WAL"
+            - name: CHROMA_SQLITE_CACHE_SIZE
+              value: "-2000"
+            - name: CHROMA_SERVER_NOFILE
+              value: "65536"
+            - name: CHROMA_SERVER_THREAD_POOL_SIZE
+              value: "40"
           volumeMounts:
             - name: chroma-data
               mountPath: /chroma/chroma
