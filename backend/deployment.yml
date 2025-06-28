@@ -15,7 +15,8 @@ spec:
       labels:
         app: backend
     spec:
-      nodeSelector: aws
+      nodeSelector: 
+        cloud-provider: aws
       imagePullSecrets:
         - name: ghcr-secret
       containers:
