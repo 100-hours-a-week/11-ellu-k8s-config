@@ -15,7 +15,8 @@ spec:
       labels:
         app: ai-summary
     spec:
-      dnsPolicy: "None"
+      hostNetwork: true
+      dnsPolicy: "ClusterFirstWithHostNet"
       dnsConfig:
         nameservers:
           - "10.96.255.53" # GCP CoreDNS 서비스 IP
@@ -83,7 +84,7 @@ spec:
                   name: ai-summary-secrets
                   key: huggingface-api-key
             - name: CHROMA_HOST
-              value: "chromadb.looper-prod.svc.cluster.local"
+              value: "10.2.0.2"
             - name: CHROMA_PORT
               value: "8000"
             - name: BE_URL

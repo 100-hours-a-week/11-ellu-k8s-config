@@ -16,6 +16,8 @@ spec:
       labels:
         app: chromadb
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         cloud-provider: gcp
         node-type: gpu
