@@ -15,11 +15,6 @@ spec:
       labels:
         app: ai-summary
     spec:
-      hostNetwork: true
-      dnsPolicy: "ClusterFirstWithHostNet"
-      dnsConfig:
-        nameservers:
-          - "10.96.255.53" # GCP CoreDNS 서비스 IP
       nodeSelector:
         cloud-provider: gcp
       tolerations:

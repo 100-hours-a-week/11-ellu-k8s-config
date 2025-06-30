@@ -11,9 +11,6 @@ spec:
       path: .
     - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
       targetRevision: HEAD
-      path: coredns-gcp
-    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
-      targetRevision: HEAD
       path: kafka
     - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
       targetRevision: HEAD

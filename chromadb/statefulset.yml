@@ -16,11 +16,6 @@ spec:
       labels:
         app: chromadb
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
-      nodeSelector:
-        cloud-provider: gcp
-        node-type: gpu
       tolerations:
         - key: "gpu"
           operator: "Equal"
@@ -38,7 +33,7 @@ spec:
             - name: PERSIST_DIRECTORY
               value: "/chroma/chroma"
             - name: CHROMA_HOST
-              value: "0.0.0.0"
+              value: "chromadb.looper-prod.svc.cluster.local"
             - name: CHROMA_PORT
               value: "8000"
             - name: CHROMA_DB_IMPL
