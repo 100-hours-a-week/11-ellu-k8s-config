@@ -83,7 +83,7 @@ spec:
             - name: CHROMA_PORT
               value: "8000"
             - name: BE_URL
-              value: "http://backend.looper-prod.svc.cluster.local"
+              value: "http://backend.looper-prod.svc.cluster.local/api"
             - name: LANGSMITH_TRACING
               value: "true"
             - name: LANGSMITH_ENDPOINT
