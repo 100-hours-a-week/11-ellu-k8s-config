@@ -18,10 +18,9 @@ spec:
       nodeSelector:
         cloud-provider: gcp
       tolerations:
-        - key: "gpu"
-          operator: "Equal"
-          value: "true" 
-          effect: "NoSchedule"
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
       imagePullSecrets:
         - name: ghcr-secret
       containers:
