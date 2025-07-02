@@ -15,6 +15,7 @@ spec:
       labels:
         app: ai-summary
     spec:
+      runtimeClassName: nvidia # NVIDIA GPU 런타임 클래스 사용
       nodeSelector:
         cloud-provider: gcp
       tolerations:
