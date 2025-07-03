@@ -32,6 +32,8 @@ spec:
             limits:       
               nvidia.com/gpu: 1  
           image: ghcr.io/100-hours-a-week/11-ellu-ai-summary-service:latest
+          securityContext:
+            privileged: true
           imagePullPolicy: Always
           lifecycle:
             postStart:
