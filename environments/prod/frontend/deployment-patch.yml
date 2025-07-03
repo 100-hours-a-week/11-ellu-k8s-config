@@ -3,11 +3,9 @@ kind: Deployment
 metadata:
   name: frontend
 spec:
-  replicas: 3
+  replicas: 2
   template:
     spec:
       containers:
         - name: frontend
-          env:
-            - name: NODE_ENV
-              value: "production"
+          image: ghcr.io/100-hours-a-week/looper-fe:1.2.0

@@ -30,3 +30,11 @@ patches:
     target:
       kind: Deployment
       name: frontend
+  - path: ai-chatbot/deployment-patch.yml
+    target:
+      kind: Deployment
+      name: ai-chatbot
+  - path: ai-summary/deployment-patch.yml
+    target:
+      kind: Deployment
+      name: ai-summary
