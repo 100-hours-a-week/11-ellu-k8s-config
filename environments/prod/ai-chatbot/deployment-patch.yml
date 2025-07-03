@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-chatbot
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: ai-chatbot
+          image: ghcr.io/100-hours-a-week/looper-ai-chatbot:1.2.0
