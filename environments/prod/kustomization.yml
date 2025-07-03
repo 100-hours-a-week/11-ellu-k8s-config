@@ -38,3 +38,11 @@ patches:
     target:
       kind: Deployment
       name: ai-summary
+  - path: chromadb/statefulset-patch.yml
+    target:
+      kind: StatefulSet
+      name: chromadb
+  - path: kafka/statefulset-patch.yml
+    target:
+      kind: StatefulSet
+      name: kafka

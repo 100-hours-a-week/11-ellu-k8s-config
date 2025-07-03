@@ -8,3 +8,7 @@ spec:
     spec:
       containers:
         - name: ai-summary
+            - name: CHROMA_HOST
+              value: "chromadb.looper-dev.svc.cluster.local"
+            - name: BE_URL
+              value: "http://backend.looper-dev.svc.cluster.local/api"

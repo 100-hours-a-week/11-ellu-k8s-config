@@ -5,33 +5,13 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  sources:
-    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
-      targetRevision: HEAD
-      path: .
-    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
-      targetRevision: HEAD
-      path: kafka
-    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
-      targetRevision: HEAD
-      path: chromadb
-    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
-      targetRevision: HEAD
-      path: backend
-    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
-      targetRevision: HEAD
-      path: frontend
-    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
-      targetRevision: HEAD
-      path: ai-chatbot
-    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
-      targetRevision: HEAD
-      path: ai-summary    
-
+  source:
+    repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
+    targetRevision: HEAD
+    path: environments/prod
   destination:
     server: https://kubernetes.default.svc
     namespace: looper-prod
-
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

@@ -8,4 +8,9 @@ spec:
     spec:
       containers:
         - name: ai-summary
-          image: ghcr.io/100-hours-a-week/looper-ai-summary:1.3.0
+          image: ghcr.io/100-hours-a-week/looper-ai-summary:1.2.0
+          env:
+            - name: CHROMA_HOST
+              value: "chromadb.looper-prod.svc.cluster.local"
+            - name: BE_URL
+              value: "http://backend.looper-prod.svc.cluster.local/api"

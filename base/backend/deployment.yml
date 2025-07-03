@@ -28,7 +28,7 @@ spec:
               cpu: 1500m
               memory: 1024Mi
           image: ghcr.io/100-hours-a-week/11-ellu-be:latest
-          imagePullPolicy: Always #IfNotPresent 개발 서버는 태그 관리 x latest로 항상 최신 이미지 사용
+          imagePullPolicy: Always
           lifecycle:
             preStop:
               exec:
@@ -67,8 +67,6 @@ spec:
                   key: s3-secret-key
             - name: AWS_REGION
               value: "ap-northeast-2"
-            - name: S3_BUCKET
-              value: "looper-dev-image-s3"
             - name: IMAGE_PREFIX
               value: "profile-images"
             - name: KAKAO_REST_API_KEY
@@ -76,50 +74,16 @@ spec:
                 secretKeyRef:
                   name: backend-secrets
                   key: kakao-rest-api-key
-            - name: KAKAO_REDIRECT_URI
-              value: "https://dev.looper.my/auth/kakao/callback"
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: backend-secrets
                   key: jwt-secret
-            - name: FASTAPI_SUMMARY_URL
-              value: "http://ai-summary.looper-prod.svc.cluster.local"
-            - name: FASTAPI_CHATBOT_URL
-              value: "http://ai-chatbot.looper-prod.svc.cluster.local"
-            - name: KAFKA_BASE_URL
-              value: "kafka.looper-prod.svc.cluster.local:9092"
             - name: SPRING_APPLICATION_JSON
               value: |
                 {
                   "spring.kafka.streams.properties.processing.guarantee": "at_least_once"
                 }
-            # OpenTelemetry
-            # - name: OTEL_SERVICE_NAME
-            #   value: "looper-backend"
-            # - name: OTEL_SERVICE_VERSION
-            #   value: "1.0.0"
-            # - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            #   value: "http://otel-collector:4318"
-            # - name: OTEL_EXPORTER_OTLP_PROTOCOL
-            #   value: "http/protobuf"
-            # - name: OTEL_RESOURCE_ATTRIBUTES
-            #   value: "service.name=looper-backend,service.version=1.0.0,service.namespace=looper,deployment.environment=production"
-            # - name: OTEL_METRICS_EXPORTER
-            #   value: "otlp"
-            # - name: OTEL_TRACES_EXPORTER
-            #   value: "otlp"
-            # - name: OTEL_LOGS_EXPORTER
-            #   value: "otlp"
-            # - name: OTEL_TRACES_SAMPLER
-            #   value: "traceidratio"
-            # - name: OTEL_TRACES_SAMPLER_ARG
-            #   value: "1.0"
-            # - name: OTEL_INSTRUMENTATION_JDBC_ENABLED
-            #   value: "true"
-            # - name: OTEL_INSTRUMENTATION_JDBC_STATEMENT_SANITIZER_ENABLED
-            #   value: "true"
-            # Spring Boot Actuator
             - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
               value: "health,info,metrics,prometheus,opentelemetry"
             - name: MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS

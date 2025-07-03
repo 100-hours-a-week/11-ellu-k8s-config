@@ -9,9 +9,13 @@ spec:
       containers:
         - name: backend
           env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "dev"
             - name: KAKAO_REDIRECT_URI
               value: "https://dev.looper.my/auth/kakao/callback"
             - name: S3_BUCKET
               value: "looper-dev-image-s3"
+            - name: FASTAPI_SUMMARY_URL
+              value: "http://ai-summary.looper-dev.svc.cluster.local"
+            - name: FASTAPI_CHATBOT_URL
+              value: "http://ai-chatbot.looper-dev.svc.cluster.local"
+            - name: KAFKA_BASE_URL
+              value: "kafka.looper-dev.svc.cluster.local:9092"

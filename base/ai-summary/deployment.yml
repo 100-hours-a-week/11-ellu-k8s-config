@@ -80,12 +80,10 @@ spec:
                 secretKeyRef:
                   name: ai-summary-secrets
                   key: huggingface-api-key
-            - name: CHROMA_HOST
-              value: "chromadb.looper-prod.svc.cluster.local"
+              value: "chromadb"
             - name: CHROMA_PORT
               value: "8000"
-            - name: BE_URL
-              value: "http://backend.looper-prod.svc.cluster.local/api"
+              value: "http://backend/api"
             - name: LANGSMITH_TRACING
               value: "true"
             - name: LANGSMITH_ENDPOINT

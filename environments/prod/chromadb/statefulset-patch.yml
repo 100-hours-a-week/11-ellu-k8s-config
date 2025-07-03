@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: chromadb
+spec:
+  template:
+    spec:
+      containers:
+        - name: chromadb
+          env:
+            - name: CHROMA_HOST
+              value: "chromadb.looper-prod.svc.cluster.local"
