@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: looper-prod
+
+resources:
+  - namespace.yml
+  - ingress.yml
+  - secretstore.yml
+  - ../../base/backend
+  - ../../base/frontend
+  - ../../base/ai-chatbot
+  - ../../base/ai-summary
+  - ../../base/kafka
+  - ../../base/chromadb
+  - backend/external-secrets.yml
+  - backend/hpa.yml
+  - frontend/hpa.yml
+  - ai-chatbot/external-secrets.yml
+  - ai-chatbot/hpa.yml
+  - ai-summary/external-secrets.yml
+  - ai-summary/hpa.yml
+
+patches:
+  - path: backend/deployment-patch.yml
+    target:
+      kind: Deployment
+      name: backend
+  - path: frontend/deployment-patch.yml
+    target:
+      kind: Deployment
+      name: frontend
