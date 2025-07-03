@@ -17,7 +17,7 @@ spec:
     spec:
       runtimeClassName: nvidia # NVIDIA GPU 런타임 클래스 사용
       nodeSelector:
-        cloud-provider: gcp
+        cloud-provider: gcp 
       tolerations:
         - key: nvidia.com/gpu
           operator: Exists
@@ -115,6 +115,12 @@ spec:
                 secretKeyRef:
                   name: ai-summary-secrets
                   key: github-token
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "all"
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: "compute,utility"
+            - name: NVIDIA_REQUIRE_CUDA
+              value: "cuda>=12.0"
             # OpenTelemetry
             # - name: OTEL_SERVICE_NAME
             #   value: "looper-ai"
