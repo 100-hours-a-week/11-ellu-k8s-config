@@ -8,6 +8,7 @@ spec:
     spec:
       containers:
         - name: ai-summary
+          env:
             - name: CHROMA_HOST
               value: "chromadb.looper-dev.svc.cluster.local"
             - name: BE_URL

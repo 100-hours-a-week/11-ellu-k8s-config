@@ -32,6 +32,7 @@ spec:
               value: "TRUE"
             - name: PERSIST_DIRECTORY
               value: "/chroma/chroma"
+            - name: CHROMA_HOST
               value: "chromadb"
             - name: CHROMA_PORT
               value: "8000"
