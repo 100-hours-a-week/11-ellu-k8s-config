@@ -19,3 +19,12 @@ spec:
               value: "http://ai-chatbot.looper-dev.svc.cluster.local"
             - name: KAFKA_BASE_URL
               value: "kafka.looper-dev.svc.cluster.local:9092"
+            - name: REDIS_HOSTNAME
+              value: "redis.looper-dev.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secrets
+                  key: redis-password

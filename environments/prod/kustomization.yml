@@ -13,6 +13,7 @@ resources:
   - ../../base/ai-summary
   - ../../base/kafka
   - ../../base/chromadb
+  - ../../base/redis
   - backend/external-secrets.yml
   - backend/hpa.yml
   - frontend/hpa.yml
@@ -20,6 +21,7 @@ resources:
   - ai-chatbot/hpa.yml
   - ai-summary/external-secrets.yml
   - ai-summary/hpa.yml
+  - redis/external-secrets.yml
 
 patches:
   - path: backend/deployment-patch.yml
@@ -46,3 +48,7 @@ patches:
     target:
       kind: StatefulSet
       name: kafka
+  - path: redis/statefulset-patch.yml
+    target:
+      kind: StatefulSet
+      name: redis
