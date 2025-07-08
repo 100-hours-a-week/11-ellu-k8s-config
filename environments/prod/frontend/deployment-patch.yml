@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/100-hours-a-week/looper-frontend:1.2.0
+          image: ghcr.io/100-hours-a-week/looper-fe:1.2.0
