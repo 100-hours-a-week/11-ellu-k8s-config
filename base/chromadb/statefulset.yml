@@ -106,4 +106,4 @@ spec:
         storageClassName: openebs-local
         resources:
           requests:
-            storage: 50Gi
+            storage: 10Gi
