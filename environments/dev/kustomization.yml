@@ -14,11 +14,13 @@ resources:
   - ../../base/kafka
   - ../../base/chromadb
   - ../../base/redis
+  - ../../base/vllm-server
   - backend/external-secrets.yml
   - frontend/hpa.yml
   - ai-chatbot/external-secrets.yml
   - ai-summary/external-secrets.yml
   - redis/external-secrets.yml
+  - vllm-server/external-secrets.yml
 
 patches:
   - path: backend/deployment-patch.yml
@@ -49,3 +51,7 @@ patches:
     target:
       kind: StatefulSet
       name: redis
+  - path: vllm-server/deployment-patch.yml
+    target:
+      kind: Deployment
+      name: vllm-server

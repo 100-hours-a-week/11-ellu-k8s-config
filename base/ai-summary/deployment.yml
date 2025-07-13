@@ -14,7 +14,6 @@ spec:
       labels:
         app: ai-summary
     spec:
-      runtimeClassName: nvidia # NVIDIA GPU 런타임 클래스 사용
       nodeSelector:
         cloud-provider: gcp 
       tolerations:
@@ -27,9 +26,11 @@ spec:
         - name: ai-summary
           resources:
             requests:
-              nvidia.com/gpu: 1
-            limits:       
-              nvidia.com/gpu: 1  
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "4Gi"
+              cpu: "1000m"
           image: ghcr.io/100-hours-a-week/11-ellu-ai-summary-service:latest
           securityContext:
             privileged: true
@@ -86,6 +87,8 @@ spec:
               value: "8000"
             - name: BE_URL
               value: "http://backend.looper-dev.svc.cluster.local/api"
+            - name: VLLM_URL
+              value: "http://vllm-server.looper-dev.svc.cluster.local:8000"
             - name: LANGSMITH_TRACING
               value: "true"
             - name: LANGSMITH_ENDPOINT

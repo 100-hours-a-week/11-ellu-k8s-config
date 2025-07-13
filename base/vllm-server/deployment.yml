@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-server
+  labels:
+    app: vllm-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-server
+  template:
+    metadata:
+      labels:
+        app: vllm-server
+    spec:
+      runtimeClassName: nvidia # NVIDIA GPU 런타임 클래스 사용
+      nodeSelector:
+        cloud-provider: gcp 
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: vllm-server
+          image: vllm/vllm-openai:latest
+          resources:
+            requests:
+              nvidia.com/gpu: 1
+              memory: "1Gi"
+              cpu: "500m"
+            limits:       
+              nvidia.com/gpu: 1
+              memory: "2Gi"
+              cpu: "1000m"
+          securityContext:
+            privileged: true
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: MODEL_NAME
+              value: "naver-hyperclovax/HyperCLOVAX-SEED-Text-Instruct-1.5B"
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "8000"
+            - name: TENSOR_PARALLEL_SIZE
+              value: "1"
+            - name: GPU_MEMORY_UTILIZATION
+              value: "0.9"
+            - name: MAX_MODEL_LEN
+              value: "2048"
+            - name: HUGGING_FACE_HUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vllm-server-secrets
+                  key: huggingface-api-key
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "all"
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: "compute,utility"
+            - name: NVIDIA_REQUIRE_CUDA
+              value: "cuda>=12.0"
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              python3 -m vllm.entrypoints.openai.api_server \
+                --model ${MODEL_NAME} \
+                --host ${HOST} \
+                --port ${PORT} \
+                --tensor-parallel-size ${TENSOR_PARALLEL_SIZE} \
+                --gpu-memory-utilization ${GPU_MEMORY_UTILIZATION} \
+                --max-model-len ${MAX_MODEL_LEN}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10

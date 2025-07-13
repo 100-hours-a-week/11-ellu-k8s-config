@@ -14,3 +14,5 @@ spec:
               value: "chromadb.looper-prod.svc.cluster.local"
             - name: BE_URL
               value: "http://backend.looper-prod.svc.cluster.local/api"
+            - name: VLLM_URL
+              value: "http://vllm-server.looper-prod.svc.cluster.local:8000"
