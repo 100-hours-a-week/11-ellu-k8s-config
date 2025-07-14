@@ -21,7 +21,7 @@ storage:
 # 퍼시스턴트 볼륨 (전역)
 persistence:
   enabled: true
-  storageClassName: "ebs-sc"
+  storageClass: "ebs-sc"
   size: 50Gi
   accessModes:
     - ReadWriteOnce
@@ -53,7 +53,7 @@ ingester:
       cpu: 500m
   persistence:
     enabled: true
-    storageClassName: "ebs-sc"
+    storageClass: "ebs-sc"
     size: 50Gi
     accessModes:
       - ReadWriteOnce
