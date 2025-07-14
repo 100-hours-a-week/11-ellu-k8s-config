@@ -8,8 +8,7 @@ image:
   pullPolicy: IfNotPresent
 
 # 배포 설정
-replicaSet:
-  replicas: 2
+replicaCount: 2
 
 # AWS 노드에 배포
 nodeSelector:
