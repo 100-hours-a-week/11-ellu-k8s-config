@@ -79,31 +79,6 @@ grafana:
           url: http://loki:3100
           access: proxy
   
-  # 대시보드 프로바이더
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-        - name: 'default'
-          orgId: 1
-          folder: ''
-          type: file
-          disableDeletion: false
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/default
-  
-  dashboards:
-    default:
-      kubernetes-cluster:
-        gnetId: 7249
-        revision: 1
-        datasource: Prometheus
-      
-      node-exporter:
-        gnetId: 1860
-        revision: 29
-        datasource: Prometheus
 
 # 알러트매니저 설정
 alertmanager:
