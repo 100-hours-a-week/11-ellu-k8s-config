@@ -1,0 +1,184 @@
+# 프로메테우스 스택 설정
+prometheus:
+  enabled: true
+  prometheusSpec:
+    replicas: 1
+    retention: 15d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "ebs-sc"
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 20Gi
+    
+    # AWS 노드에 배포
+    nodeSelector:
+      cloud-provider: aws
+    
+    # 서비스 모니터 선택자
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
+    podMonitorSelector: {}
+    podMonitorNamespaceSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 250m
+      limits:
+        memory: 2Gi
+        cpu: 500m
+  
+  service:
+    type: ClusterIP
+
+# 그라파나 설정
+grafana:
+  enabled: true
+  adminPassword: "admin123"
+  
+  # AWS 노드에 배포
+  nodeSelector:
+    cloud-provider: aws
+  
+  persistence:
+    enabled: true
+    storageClassName: "ebs-sc"
+    size: 10Gi
+  
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 200m
+  
+  # 데이터 소스
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: http://kube-prometheus-stack-prometheus:9090
+          access: proxy
+          isDefault: true
+        
+        - name: Tempo
+          type: tempo
+          url: http://tempo:3200
+          access: proxy
+          
+        - name: Loki
+          type: loki
+          url: http://loki:3100
+          access: proxy
+  
+  # 대시보드 프로바이더
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+  
+  dashboards:
+    default:
+      kubernetes-cluster:
+        gnetId: 7249
+        revision: 1
+        datasource: Prometheus
+      
+      node-exporter:
+        gnetId: 1860
+        revision: 29
+        datasource: Prometheus
+
+# 알러트매니저 설정
+alertmanager:
+  enabled: true
+  alertmanagerSpec:
+    replicas: 1
+    retention: 120h
+    
+    # AWS 노드에 배포
+    nodeSelector:
+      cloud-provider: aws
+    
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "ebs-sc"
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+    
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 200m
+
+# 노드 익스포터 (모든 노드에서 실행)
+nodeExporter:
+  enabled: true
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Exists
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/kafka
+      operator: Exists
+      effect: NoSchedule
+
+# 큐브 상태 메트릭
+kubeStateMetrics:
+  enabled: true
+  nodeSelector:
+    cloud-provider: aws
+
+# 서비스 모니터
+serviceMonitor:
+  enabled: true
+
+# 기본 알림 규칙
+defaultRules:
+  create: true
+  rules:
+    alertmanager: true
+    etcd: true
+    configReloaders: true
+    general: true
+    k8s: true
+    kubeApiserver: true
+    kubeApiserverAvailability: true
+    kubeApiserverSlos: true
+    kubelet: true
+    kubeProxy: true
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    kubeScheduler: true
+    kubeStateMetrics: true
+    network: true
+    node: true
+    nodeExporterAlerting: true
+    nodeExporterRecording: true
+    prometheus: true
+    prometheusOperator: true

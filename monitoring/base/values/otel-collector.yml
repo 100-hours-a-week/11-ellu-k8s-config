@@ -1,0 +1,175 @@
+# OpenTelemetry 컬렉터 설정 (v0.127.1 호환)
+mode: deployment
+
+# 이미지 설정 (차트 버전과 매칭)
+image:
+  repository: otel/opentelemetry-collector-k8s
+  tag: "0.127.1"
+  pullPolicy: IfNotPresent
+
+# 배포 설정
+replicaSet:
+  replicas: 2
+
+# AWS 노드에 배포
+nodeSelector:
+  cloud-provider: aws
+
+# 리소스 설정
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+    cpu: 500m
+
+# 서비스 어카운트 (필수)
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+# RBAC 설정 (필수)
+clusterRole:
+  create: true
+  rules:
+    - apiGroups: [""]
+      resources: ["nodes", "nodes/proxy", "services", "endpoints", "pods", "events"]
+      verbs: ["get", "list", "watch"]
+    - apiGroups: ["apps"]
+      resources: ["deployments", "replicasets"]
+      verbs: ["get", "list", "watch"]
+    - apiGroups: ["networking.k8s.io"]
+      resources: ["ingresses"]
+      verbs: ["get", "list", "watch"]
+    - nonResourceURLs: ["/metrics"]
+      verbs: ["get"]
+
+# 포트 설정 (새로운 구조)
+ports:
+  otlp:
+    enabled: true
+    containerPort: 4317
+    servicePort: 4317
+  otlp-http:
+    enabled: true
+    containerPort: 4318
+    servicePort: 4318
+  jaeger-grpc:
+    enabled: true
+    containerPort: 14250
+    servicePort: 14250
+  jaeger-thrift-http:
+    enabled: true
+    containerPort: 14268
+    servicePort: 14268
+  zipkin:
+    enabled: true
+    containerPort: 9411
+    servicePort: 9411
+  metrics:
+    enabled: true
+    containerPort: 8888
+    servicePort: 8888
+
+# OpenTelemetry 설정
+config:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+        http:
+          endpoint: 0.0.0.0:4318
+    
+    jaeger:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:14250
+        thrift_http:
+          endpoint: 0.0.0.0:14268
+    
+    zipkin:
+      endpoint: 0.0.0.0:9411
+    
+    prometheus:
+      config:
+        scrape_configs:
+          - job_name: 'otel-collector'
+            scrape_interval: 15s
+            static_configs:
+              - targets: ['0.0.0.0:8888']
+
+  processors:
+    batch:
+      timeout: 1s
+      send_batch_size: 1024
+    
+    memory_limiter:
+      limit_mib: 400
+    
+    resource:
+      attributes:
+        - key: service.namespace
+          from_attribute: k8s.namespace.name
+          action: upsert
+        - key: k8s.cluster.name
+          value: "looper-cluster"
+          action: upsert
+    
+    resourcedetection/k8s:
+      detectors: [env, k8snode, k8spod]
+      timeout: 2s
+      override: false
+
+  exporters:
+    otlp/tempo:
+      endpoint: http://tempo:4317
+      tls:
+        insecure: true
+    
+    prometheusremotewrite:
+      endpoint: "http://kube-prometheus-stack-prometheus:9090/api/v1/write"
+    
+    debug:
+      verbosity: basic
+
+  extensions:
+    health_check:
+      endpoint: 0.0.0.0:13133
+    
+    pprof:
+      endpoint: 0.0.0.0:1777
+
+  service:
+    extensions: [health_check, pprof]
+    pipelines:
+      traces:
+        receivers: [otlp, jaeger, zipkin]
+        processors: [memory_limiter, resourcedetection/k8s, resource, batch]
+        exporters: [otlp/tempo, debug]
+      
+      metrics:
+        receivers: [otlp, prometheus]
+        processors: [memory_limiter, resourcedetection/k8s, resource, batch]
+        exporters: [prometheusremotewrite, debug]
+      
+      logs:
+        receivers: [otlp]
+        processors: [memory_limiter, resourcedetection/k8s, resource, batch]
+        exporters: [debug]
+
+# 오토스케일링
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# 서비스 모니터
+serviceMonitor:
+  enabled: true
+  interval: 15s
+  scrapeTimeout: 10s

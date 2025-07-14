@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-stack
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # Prometheus + Grafana + AlertManager
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: "75.10.0"
+      helm:
+        valueFiles:
+          - $values/monitoring/base/values/kube-prometheus-stack.yml
+    
+    # Tempo for distributed tracing
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: tempo-distributed
+      targetRevision: "1.45.0"
+      helm:
+        valueFiles:
+          - $values/monitoring/base/values/tempo.yml
+    
+    # OpenTelemetry Collector
+    - repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
+      chart: opentelemetry-collector
+      targetRevision: "0.127.1"
+      helm:
+        valueFiles:
+          - $values/monitoring/base/values/otel-collector.yml
+    
+    # Loki for log aggregation
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: loki
+      targetRevision: "6.31.0"
+      helm:
+        valueFiles:
+          - $values/monitoring/base/values/loki.yml
+    
+    # Values repo reference
+    - repoURL: https://github.com/100-hours-a-week/11-ellu-k8s-config.git
+      targetRevision: HEAD
+      ref: values
+      
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    automated:
+      selfHeal: true
+      prune: true
