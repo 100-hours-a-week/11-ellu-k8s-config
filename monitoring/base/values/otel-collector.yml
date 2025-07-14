@@ -1,12 +1,6 @@
 # OpenTelemetry 컬렉터 설정 (v0.127.1 호환)
 mode: deployment
 
-# 이미지 설정 (차트 버전과 매칭)
-image:
-  repository: otel/opentelemetry-collector-k8s
-  tag: "0.127.1"
-  pullPolicy: IfNotPresent
-
 # 배포 설정
 replicaCount: 2
 
