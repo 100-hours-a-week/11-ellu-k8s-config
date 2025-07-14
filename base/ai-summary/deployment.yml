@@ -29,7 +29,7 @@ spec:
               memory: "1Gi"
               cpu: "500m"
             limits:
-              memory: "4Gi"
+              memory: "2Gi"
               cpu: "1000m"
           image: ghcr.io/100-hours-a-week/11-ellu-ai-summary-service:latest
           securityContext:
