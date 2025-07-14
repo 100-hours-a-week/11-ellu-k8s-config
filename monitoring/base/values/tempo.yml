@@ -38,6 +38,14 @@ distributor:
     limits:
       memory: 512Mi
       cpu: 200m
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
 
 # 인제스터 설정
 ingester:
