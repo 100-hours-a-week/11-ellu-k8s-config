@@ -33,11 +33,11 @@ spec:
               cpu: "1000m"
             limits:       
               nvidia.com/gpu: 1
-              memory: "10Gi"
+              memory: "8Gi"
               cpu: "2000m"
           securityContext:
             privileged: true
-          imagePullPolicy: ifNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
               name: http
