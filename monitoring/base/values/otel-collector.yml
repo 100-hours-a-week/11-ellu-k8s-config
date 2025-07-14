@@ -12,6 +12,13 @@ replicaCount: 2
 nodeSelector:
   cloud-provider: aws
 
+# 환경 변수 (k8s 리소스 감지용)
+extraEnvs:
+  - name: KUBE_NODE_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: spec.nodeName
+
 # 리소스 설정
 resources:
   requests:
