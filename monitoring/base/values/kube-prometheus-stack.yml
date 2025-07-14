@@ -58,6 +58,11 @@ grafana:
       memory: 512Mi
       cpu: 200m
   
+  # 기본 프로메테우스 데이터소스 생성 비활성화
+  sidecar:
+    datasources:
+      defaultDatasourceEnabled: false
+  
   # 데이터 소스
   datasources:
     datasources.yaml:
