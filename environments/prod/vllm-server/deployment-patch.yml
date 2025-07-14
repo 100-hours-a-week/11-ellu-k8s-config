@@ -13,5 +13,5 @@ spec:
               memory: "2Gi"
               cpu: "1000m"
             limits:       
-              memory: "12Gi"
+              memory: "9Gi"
               cpu: "2000m"
