@@ -33,7 +33,7 @@ spec:
     # Loki for log aggregation
     - repoURL: https://grafana.github.io/helm-charts
       chart: loki
-      targetRevision: "6.31.0"
+      targetRevision: "6.28.0"
       helm:
         valueFiles:
           - $values/monitoring/base/values/loki.yml
