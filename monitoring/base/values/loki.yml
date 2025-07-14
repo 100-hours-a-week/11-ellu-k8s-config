@@ -1,95 +1,21 @@
-# 로키 로그 수집 설정 (v6.31.0 호환)
+# 로키 로그 수집 설정 (EKS 검증된 구성 기반)
 fullnameOverride: "loki"
 nameOverride: "loki"
 
-# 배포 모드 (필수)
-deploymentMode: SingleBinary
+# 배포 모드
+deploymentMode: SimpleScalable
 
-# 글로벌 이미지 설정
-global:
-  image:
-    repository: grafana/loki
-  dnsService: "kube-dns"
-
-# Single Binary 모드 설정
-singleBinary:
-  replicas: 1
-  nodeSelector:
-    cloud-provider: aws
-  resources:
-    requests:
-      memory: 256Mi
-      cpu: 100m
-    limits:
-      memory: 512Mi
-      cpu: 500m
-  persistence:
-    enabled: true
-    storageClassName: "ebs-sc"
-    size: 30Gi
-    accessModes:
-      - ReadWriteOnce
-
-# 다른 컴포넌트들 비활성화 (Single Binary 모드)
-backend:
-  replicas: 0
-read:
-  replicas: 0
-write:
-  replicas: 0
-ingester:
-  replicas: 0
-querier:
-  replicas: 0
-queryFrontend:
-  replicas: 0
-queryScheduler:
-  replicas: 0
-distributor:
-  replicas: 0
-compactor:
-  replicas: 0
-indexGateway:
-  replicas: 0
-bloomCompactor:
-  replicas: 0
-bloomGateway:
-  replicas: 0
-
-# 캐시 설정 (Single Binary에서는 비활성화)
-chunksCache:
-  enabled: false
-resultsCache:
-  enabled: false
-
-# Loki 설정
 loki:
   auth_enabled: false
   
-  server:
-    http_listen_port: 3100
-    grpc_listen_port: 9095
-  
-  memberlist:
-    join_members: ["loki-memberlist"]
-  
-  limits_config:
-    retention_period: 168h
-    enforce_metric_name: false
-    reject_old_samples: true
-    reject_old_samples_max_age: 168h
-    max_cache_freshness_per_query: 10m
-    split_queries_by_interval: 15m
-    max_query_parallelism: 32
-  
-  schema_config:
+  schemaConfig:
     configs:
-      - from: 2024-04-01
+      - from: "2020-01-01"
         store: tsdb
         object_store: filesystem
         schema: v13
         index:
-          prefix: loki_index_
+          prefix: index_
           period: 24h
   
   storage_config:
@@ -99,58 +25,103 @@ loki:
       active_index_directory: /var/loki/tsdb-index
       cache_location: /var/loki/tsdb-cache
   
+  limits_config:
+    retention_period: 672h # 28일
+  
   storage:
     type: filesystem
-    bucketNames:
-      chunks: chunks
-      ruler: ruler
-      admin: admin
-  
-  compactor:
-    working_directory: /var/loki/compactor
-    shared_store: filesystem
-    compaction_interval: 10m
-    retention_enabled: true
-    retention_delete_delay: 2h
-    retention_delete_worker_count: 150
-  
-  ingester:
-    max_chunk_age: 1h
-    chunk_idle_period: 3m
-    chunk_block_size: 262144
-    chunk_target_size: 1536000
-    chunk_retain_period: 30s
-    max_transfer_retries: 0
-    wal:
-      enabled: true
-      dir: /var/loki/wal
-    lifecycler:
-      address: 127.0.0.1
-      ring:
-        kvstore:
-          store: inmemory
-        replication_factor: 1
-      final_sleep: 0s
-  
-  query_range:
-    results_cache:
-      cache:
-        embedded_cache:
-          enabled: true
-          max_size_mb: 100
+
+# Single Binary 비활성화
+singleBinary:
+  replicas: 0
+
+# Backend 컴포넌트
+backend:
+  replicas: 2
+  maxUnavailable: 1
+  nodeSelector:
+    cloud-provider: aws
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  persistence:
+    enabled: true
+    storageClassName: "ebs-sc"
+    size: 20Gi
+
+# Read 컴포넌트
+read:
+  replicas: 2
+  maxUnavailable: 1
+  nodeSelector:
+    cloud-provider: aws
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# Write 컴포넌트
+write:
+  replicas: 2
+  maxUnavailable: 1
+  nodeSelector:
+    cloud-provider: aws
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  persistence:
+    enabled: true
+    storageClassName: "ebs-sc"
+    size: 20Gi
+
+# 청크 캐시 (EKS 설정 유지)
+chunksCache:
+  enabled: true
+  nodeSelector:
+    cloud-provider: aws
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  chunkSizeLimit: 1Gi
+  memoryLimitMb: 512
+
+# Results 캐시
+resultsCache:
+  enabled: true
+
+# 서비스 어카운트 (kubeadm용 - EKS 어노테이션 제거)
+serviceAccount:
+  create: true
+  name: "loki"
+  annotations: {}
+
+# 게이트웨이
+gateway:
+  enabled: true
+  replicas: 2
+  maxUnavailable: 1
+  nodeSelector:
+    cloud-provider: aws
 
 # 서비스 설정
 service:
   type: ClusterIP
   port: 3100
-
-# 게이트웨이 (Single Binary에서는 비활성화)
-gateway:
-  enabled: false
-
-# 모니터링 (기본 비활성화, 나중에 meta-monitoring 사용)
-monitoring:
-  enabled: false
 
 # 서비스 모니터
 serviceMonitor:
@@ -160,8 +131,4 @@ serviceMonitor:
 
 # 테스트 비활성화
 test:
-  enabled: false
-
-# 로키 카나리 (선택사항)
-lokiCanary:
   enabled: false
