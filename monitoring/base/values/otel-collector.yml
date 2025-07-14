@@ -14,7 +14,7 @@ nodeSelector:
 
 # 환경 변수 (k8s 리소스 감지용)
 extraEnvs:
-  - name: KUBE_NODE_NAME
+  - name: K8S_NODE_NAME
     valueFrom:
       fieldRef:
         fieldPath: spec.nodeName
