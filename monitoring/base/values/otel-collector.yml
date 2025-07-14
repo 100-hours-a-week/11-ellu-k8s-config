@@ -57,10 +57,6 @@ ports:
     enabled: true
     containerPort: 14250
     servicePort: 14250
-  jaeger-http:
-    enabled: true
-    containerPort: 14268
-    servicePort: 14268
   zipkin:
     enabled: true
     containerPort: 9411
