@@ -99,6 +99,13 @@ loki:
       active_index_directory: /var/loki/tsdb-index
       cache_location: /var/loki/tsdb-cache
   
+  storage:
+    type: filesystem
+    bucketNames:
+      chunks: chunks
+      ruler: ruler
+      admin: admin
+  
   compactor:
     working_directory: /var/loki/compactor
     shared_store: filesystem
