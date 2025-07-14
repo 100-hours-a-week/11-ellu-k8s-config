@@ -59,7 +59,7 @@ ports:
     enabled: true
     containerPort: 14250
     servicePort: 14250
-  jaeger-thrift-http:
+  jaeger-http:
     enabled: true
     containerPort: 14268
     servicePort: 14268

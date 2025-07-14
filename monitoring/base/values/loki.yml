@@ -30,12 +30,6 @@ loki:
       ruler: ruler
       admin: admin
 
-# 전역 퍼시스턴트 볼륨
-persistence:
-  enabled: true
-  storageClass: "ebs-sc"
-  size: 20Gi
-
 singleBinary:
   replicas: 1
   nodeSelector:
@@ -47,6 +41,10 @@ singleBinary:
     limits:
       cpu: 500m
       memory: 512Mi
+  persistence:
+    enabled: true
+    storageClass: "ebs-sc"
+    size: 20Gi
 
 backend:
   replicas: 0
