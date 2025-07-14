@@ -29,12 +29,12 @@ spec:
           resources:
             requests:
               nvidia.com/gpu: 1
-              memory: "1Gi"
-              cpu: "500m"
+              memory: "4Gi"
+              cpu: "1000m"
             limits:       
               nvidia.com/gpu: 1
-              memory: "2Gi"
-              cpu: "1000m"
+              memory: "12Gi"
+              cpu: "2000m"
           securityContext:
             privileged: true
           imagePullPolicy: Always
