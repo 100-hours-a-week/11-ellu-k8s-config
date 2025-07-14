@@ -125,12 +125,12 @@ config:
 
   exporters:
     otlp/tempo:
-      endpoint: http://tempo:4317
+      endpoint: http://tempo-distributor:4317
       tls:
         insecure: true
     
     otlphttp/prometheus:
-      endpoint: "http://kube-prometheus-stack-prometheus:9090/api/v1/otlp"
+      endpoint: "http://monitoring-stack-kube-prom-prometheus:9090/api/v1/otlp"
     
     debug:
       verbosity: basic
