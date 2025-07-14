@@ -119,7 +119,7 @@ config:
           action: upsert
     
     resourcedetection/k8s:
-      detectors: [env, k8snode, k8spod]
+      detectors: [env, k8snode]
       timeout: 2s
       override: false
 
