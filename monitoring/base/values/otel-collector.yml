@@ -129,8 +129,8 @@ config:
       tls:
         insecure: true
     
-    otlphttp/prometheus:
-      endpoint: "http://monitoring-stack-kube-prom-prometheus:9090/api/v1/otlp"
+    prometheusremotewrite:
+      endpoint: "http://monitoring-stack-kube-prom-prometheus:9090/api/v1/write"
     
     debug:
       verbosity: basic
@@ -153,7 +153,7 @@ config:
       metrics:
         receivers: [otlp, prometheus]
         processors: [memory_limiter, resourcedetection/k8s, resource, batch]
-        exporters: [otlphttp/prometheus, debug]
+        exporters: [prometheusremotewrite, debug]
       
       logs:
         receivers: [otlp]
