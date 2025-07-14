@@ -2,107 +2,62 @@
 fullnameOverride: "loki"
 nameOverride: "loki"
 
-# 배포 모드
-deploymentMode: SimpleScalable
+# 배포 모드 (Filesystem은 Single Binary만 지원)
+deploymentMode: SingleBinary
 
-loki:
-  auth_enabled: false
-  
-  schemaConfig:
-    configs:
-      - from: "2020-01-01"
-        store: tsdb
-        object_store: filesystem
-        schema: v13
-        index:
-          prefix: index_
-          period: 24h
-  
-  storage_config:
-    filesystem:
-      directory: /var/loki/chunks
-    tsdb_shipper:
-      active_index_directory: /var/loki/tsdb-index
-      cache_location: /var/loki/tsdb-cache
-  
-  limits_config:
-    retention_period: 672h # 28일
-  
-  storage:
-    type: filesystem
-
-# Single Binary 비활성화
+# Single Binary 설정
 singleBinary:
-  replicas: 0
-
-# Backend 컴포넌트
-backend:
-  replicas: 2
-  maxUnavailable: 1
-  nodeSelector:
-    cloud-provider: aws
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi
-  persistence:
-    enabled: true
-    storageClassName: "ebs-sc"
-    size: 20Gi
-
-# Read 컴포넌트
-read:
-  replicas: 2
-  maxUnavailable: 1
-  nodeSelector:
-    cloud-provider: aws
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi
-
-# Write 컴포넌트
-write:
-  replicas: 2
-  maxUnavailable: 1
-  nodeSelector:
-    cloud-provider: aws
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi
-  persistence:
-    enabled: true
-    storageClassName: "ebs-sc"
-    size: 20Gi
-
-# 청크 캐시 (EKS 설정 유지)
-chunksCache:
-  enabled: true
+  replicas: 1
   nodeSelector:
     cloud-provider: aws
   resources:
     requests:
       cpu: 200m
-      memory: 512Mi
+      memory: 256Mi
     limits:
       cpu: 500m
-      memory: 1Gi
-  chunkSizeLimit: 1Gi
-  memoryLimitMb: 512
+      memory: 512Mi
+  persistence:
+    enabled: true
+    storageClassName: "ebs-sc"
+    size: 30Gi
 
-# Results 캐시
+# 다른 컴포넌트들 비활성화
+backend:
+  replicas: 0
+read:
+  replicas: 0
+write:
+  replicas: 0
+ingester:
+  replicas: 0
+querier:
+  replicas: 0
+queryFrontend:
+  replicas: 0
+queryScheduler:
+  replicas: 0
+distributor:
+  replicas: 0
+compactor:
+  replicas: 0
+indexGateway:
+  replicas: 0
+bloomCompactor:
+  replicas: 0
+bloomGateway:
+  replicas: 0
+
+# 캐시 비활성화 (Single Binary 권장)
+chunksCache:
+  enabled: false
 resultsCache:
-  enabled: true
+  enabled: false
+
+# Loki 설정
+loki:
+  auth_enabled: false
+  useTestSchema: true
 
 # 서비스 어카운트 (kubeadm용 - EKS 어노테이션 제거)
 serviceAccount:
