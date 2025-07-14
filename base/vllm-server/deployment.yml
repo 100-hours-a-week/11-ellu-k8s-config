@@ -33,7 +33,7 @@ spec:
               cpu: "1000m"
             limits:       
               nvidia.com/gpu: 1
-              memory: "12Gi"
+              memory: "10Gi"
               cpu: "2000m"
           securityContext:
             privileged: true
