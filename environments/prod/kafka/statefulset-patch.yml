@@ -5,6 +5,17 @@ metadata:
 spec:
   template:
     spec:
+      initContainers:
+        - name: opentelemetry-agent-downloader
+          image: curlimages/curl:8.6.0
+          args:
+            - -sL
+            - -o
+            - /otel-agent/opentelemetry-javaagent.jar
+            - https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
+          volumeMounts:
+            - name: otel-agent
+              mountPath: /otel-agent
       containers:
         - name: kafka
           env:
@@ -12,3 +23,17 @@ spec:
               value: "1@kafka-0.kafka-headless.looper-prod.svc.cluster.local:9093"
             - name: KAFKA_ADVERTISED_LISTENERS
               value: "PLAINTEXT://kafka.looper-prod.svc.cluster.local:9092"
+            - name: KAFKA_OPTS
+              value: "-javaagent:/otel-agent/opentelemetry-javaagent.jar"
+            - name: OTEL_SERVICE_NAME
+              value: "kafka"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://monitoring-stack-opentelemetry-collector.monitoring.svc.cluster.local:4318/v1/traces"
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "http/protobuf"
+          volumeMounts:
+            - name: otel-agent
+              mountPath: /otel-agent
+      volumes:
+        - name: otel-agent
+          emptyDir: {}
