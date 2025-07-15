@@ -11,10 +11,6 @@ spec:
           image: ghcr.io/100-hours-a-week/looper-ai-chatbot:1.0.0
           imagePullPolicy: IfNotPresent
           env:
-            - name: LOG_LEVEL
-              value: "INFO"
-            - name: ENVIRONMENT
-              value: "production"
             - name: OTEL_SERVICE_NAME
               value: "looper-chatbot"
             - name: OTEL_SERVICE_VERSION
