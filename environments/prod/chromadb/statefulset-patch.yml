@@ -11,6 +11,6 @@ spec:
             - name: CHROMA_HOST
               value: "chromadb.looper-prod.svc.cluster.local"
             - name: CHROMA_OPEN_TELEMETRY__ENDPOINT
-              value: "http://monitoring-stack-opentelemetry-collector.monitoring.svc.cluster.local:4317"
+              value: "http://monitoring-stack-opentelemetry-collector.monitoring.svc.cluster.local:4318"
             - name: CHROMA_OPEN_TELEMETRY__SERVICE_NAME
               value: "chromadb"
