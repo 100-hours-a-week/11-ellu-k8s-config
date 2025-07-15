@@ -22,6 +22,7 @@ loki:
   
   limits_config:
     retention_period: 672h
+    volume_enabled: true
   
   storage:
     type: filesystem
