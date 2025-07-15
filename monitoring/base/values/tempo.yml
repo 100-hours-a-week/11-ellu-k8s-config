@@ -39,6 +39,11 @@ distributor:
   replicas: 1
   nodeSelector:
     cloud-provider: aws
+  config:
+    extend_writes: true
+    metrics_generator_processors:
+      - service-graphs
+      - span-metrics
   resources:
     requests:
       memory: 256Mi
