@@ -175,9 +175,6 @@ service:
 # 서비스 그래프 활성화를 위한 오버라이드  
 per_tenant_overrides:
   'default':
-    metrics_generator:
-      processors:
-        service_graphs:
-          enabled: true
-        span_metrics:
-          enabled: true
+    metrics_generator_processors:
+      - service-graphs
+      - span-metrics
