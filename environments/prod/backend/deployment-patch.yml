@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/100-hours-a-week/looper-be:1.4.3
+          image: ghcr.io/100-hours-a-week/looper-be:1.4.4
           imagePullPolicy: IfNotPresent
           env:
             - name: KAKAO_REDIRECT_URI
@@ -82,3 +82,5 @@ spec:
               value: "always"
             - name: MANAGEMENT_TRACING_SAMPLING_PROBABILITY
               value: "1.0"
+            - name: OTEL_PROPAGATORS
+              value: "tracecontext,baggage"
