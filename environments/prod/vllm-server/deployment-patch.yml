@@ -51,9 +51,6 @@ spec:
           volumeMounts:
             - name: opentelemetry-libs
               mountPath: /opt/opentelemetry
-      volumes:
-        - name: opentelemetry-libs
-          emptyDir: {}
           args:
             - |
               python3 -m vllm.entrypoints.openai.api_server \
@@ -64,3 +61,6 @@ spec:
                 --gpu-memory-utilization ${GPU_MEMORY_UTILIZATION} \
                 --max-model-len ${MAX_MODEL_LEN} \
                 --otlp-traces-endpoint ${OTLP_TRACES_ENDPOINT}
+      volumes:
+        - name: opentelemetry-libs
+          emptyDir: {}
