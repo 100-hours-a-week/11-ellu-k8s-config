@@ -125,7 +125,7 @@ config:
 
   exporters:
     otlp/tempo:
-      endpoint: http://monitoring-stack-tempo-distributor:4317
+      endpoint: http://tempo-distributor:4317
       tls:
         insecure: true
     
