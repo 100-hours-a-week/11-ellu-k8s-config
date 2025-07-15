@@ -73,6 +73,7 @@ grafana:
           url: http://monitoring-stack-kube-prom-prometheus:9090
           access: proxy
           isDefault: true
+          uid: prometheus
         
         - name: Tempo
           type: tempo
