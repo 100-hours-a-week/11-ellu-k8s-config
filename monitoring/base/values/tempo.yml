@@ -177,5 +177,7 @@ per_tenant_overrides:
   'default':
     metrics_generator:
       processors:
-        - service-graphs
-        - span-metrics
+        service_graphs:
+          enabled: true
+        span_metrics:
+          enabled: true
