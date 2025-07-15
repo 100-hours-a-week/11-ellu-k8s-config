@@ -6,6 +6,22 @@ spec:
   replicas: 1
   template:
     spec:
+      initContainers:
+        - name: install-opentelemetry
+          image: python:3.12-slim
+          command: ['sh', '-c']
+          args:
+            - |
+              pip install --target=/opt/opentelemetry \
+                'opentelemetry-sdk>=1.26.0,<1.27.0' \
+                'opentelemetry-api>=1.26.0,<1.27.0' \
+                'opentelemetry-exporter-otlp>=1.26.0,<1.27.0' \
+                'opentelemetry-semantic-conventions-ai>=0.4.1,<0.5.0' \
+                'opentelemetry-instrumentation-fastapi' \
+                'opentelemetry-instrumentation-requests'
+          volumeMounts:
+            - name: opentelemetry-libs
+              mountPath: /opt/opentelemetry
       containers:
         - name: vllm-server
           resources:
@@ -30,6 +46,14 @@ spec:
               value: "otlp"
             - name: OTLP_TRACES_ENDPOINT
               value: "http://monitoring-stack-opentelemetry-collector.monitoring.svc.cluster.local:4317"
+            - name: PYTHONPATH
+              value: "/opt/opentelemetry:$PYTHONPATH"
+          volumeMounts:
+            - name: opentelemetry-libs
+              mountPath: /opt/opentelemetry
+      volumes:
+        - name: opentelemetry-libs
+          emptyDir: {}
           args:
             - |
               python3 -m vllm.entrypoints.openai.api_server \
