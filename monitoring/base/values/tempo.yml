@@ -39,11 +39,6 @@ distributor:
   replicas: 1
   nodeSelector:
     cloud-provider: aws
-  config:
-    extend_writes: true
-    metrics_generator_processors:
-      - service-graphs
-      - span-metrics
   resources:
     requests:
       memory: 256Mi
@@ -121,17 +116,23 @@ storage:
     block:
       retention: 168h
 
-# 메트릭 생성기 (새로운 구조)
+# 메트릭 생성기 (올바른 구조)
 metricsGenerator:
   enabled: true
   replicas: 1
   nodeSelector:
     cloud-provider: aws
   config:
-    service_graphs:
-      histogram_buckets: [0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8]
-    span_metrics:
-      histogram_buckets: [0.002, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]
+    processor:
+      service_graphs:
+        dimensions: []
+        histogram_buckets: [0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4, 12.8]
+        max_items: 10000
+        wait: 10s
+        workers: 10
+      span_metrics:
+        dimensions: []
+        histogram_buckets: [0.002, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]
     storage:
       remote_write:
         - url: http://monitoring-stack-kube-prom-prometheus:9090/api/v1/write
