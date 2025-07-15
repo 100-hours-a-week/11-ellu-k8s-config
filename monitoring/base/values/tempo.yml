@@ -9,7 +9,7 @@ global:
     tag: "2.6.0"
     pullPolicy: IfNotPresent
 
-# 전역 스토리지 클래스
+# 전역 스토리지 클래스  
 storage:
   trace:
     backend: local
@@ -17,6 +17,14 @@ storage:
       path: /var/tempo/traces
     wal:
       path: /var/tempo/wal
+    ring:
+      kvstore:
+        store: memberlist
+
+# 멤버리스트 설정 (링 관리용)
+memberlist:
+  join_members:
+    - tempo-gossip-ring
 
 # 퍼시스턴트 볼륨 (전역)
 persistence:
