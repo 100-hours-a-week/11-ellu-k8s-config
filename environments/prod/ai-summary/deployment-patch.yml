@@ -37,3 +37,5 @@ spec:
               value: "1.0"
             - name: OTEL_INSTRUMENTATION_CHROMADB_ENABLED
               value: "true"
+            - name: OTEL_INSTRUMENTATION_REQUESTS_ENABLED
+              value: "true"

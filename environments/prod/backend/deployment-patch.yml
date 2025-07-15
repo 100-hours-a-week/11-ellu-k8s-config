@@ -58,6 +58,10 @@ spec:
               value: "true"
             - name: OTEL_INSTRUMENTATION_REDIS_ENABLED
               value: "true"
+            - name: SPRING_KAFKA_LISTENER_OBSERVATION_ENABLED
+              value: "true"
+            - name: SPRING_KAFKA_TEMPLATE_OBSERVATION_ENABLED
+              value: "true"
             - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
               value: "health,info,metrics,prometheus,opentelemetry"
             - name: MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS
