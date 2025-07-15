@@ -58,11 +58,23 @@ spec:
               value: "true"
             - name: OTEL_INSTRUMENTATION_REDIS_ENABLED
               value: "true"
+            - name: OTEL_INSTRUMENTATION_LETTUCE_ENABLED
+              value: "true"
+            - name: OTEL_INSTRUMENTATION_JEDIS_ENABLED
+              value: "true"
             - name: SPRING_KAFKA_LISTENER_OBSERVATION_ENABLED
               value: "true"
             - name: SPRING_KAFKA_TEMPLATE_OBSERVATION_ENABLED
               value: "true"
             - name: SPRING_DATA_REDIS_OBSERVATION_ENABLED
+              value: "true"
+            - name: MANAGEMENT_OBSERVATIONS_KAFKA_ENABLED
+              value: "true"
+            - name: MANAGEMENT_OBSERVATIONS_REDIS_ENABLED
+              value: "true"
+            - name: OTEL_JAVAAGENT_ENABLED
+              value: "true"
+            - name: BP_OPENTELEMETRY_ENABLED
               value: "true"
             - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
               value: "health,info,metrics,prometheus,opentelemetry"
