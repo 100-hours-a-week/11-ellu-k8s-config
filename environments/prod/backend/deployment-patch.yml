@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: backend
 spec:
-  replicas: 1
+  replicas: 3
   template:
     spec:
       containers:
@@ -30,13 +30,33 @@ spec:
                 secretKeyRef:
                   name: redis-secrets
                   key: redis-password
-            - name: MANAGEMENT_OTLP_TRACING_ENDPOINT
-              value: "http://monitoring-stack-opentelemetry-collector.monitoring.svc.cluster.local:4318/v1/traces"
-            - name: MANAGEMENT_TRACING_ENABLED
-              value: "true"
             - name: OTEL_SERVICE_NAME
               value: "looper-backend"
             - name: OTEL_SERVICE_VERSION
               value: "1.0.0"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://monitoring-stack-opentelemetry-collector.monitoring.svc.cluster.local:4318"
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "http/protobuf"
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: "service.name=looper-backend,service.version=1.0.0,service.namespace=looper,deployment.environment=prod"
+              value: "service.name=looper-backend,service.version=1.0.0,service.namespace=looper,deployment.environment=production"
+            - name: OTEL_METRICS_EXPORTER
+              value: "otlp"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
+            - name: OTEL_LOGS_EXPORTER
+              value: "otlp"
+            - name: OTEL_TRACES_SAMPLER
+              value: "traceidratio"
+            - name: OTEL_TRACES_SAMPLER_ARG
+              value: "1.0"
+            - name: OTEL_INSTRUMENTATION_JDBC_ENABLED
+              value: "true"
+            - name: OTEL_INSTRUMENTATION_JDBC_STATEMENT_SANITIZER_ENABLED
+              value: "true"
+            - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+              value: "health,info,metrics,prometheus,opentelemetry"
+            - name: MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS
+              value: "always"
+            - name: MANAGEMENT_TRACING_SAMPLING_PROBABILITY
+              value: "1.0"
