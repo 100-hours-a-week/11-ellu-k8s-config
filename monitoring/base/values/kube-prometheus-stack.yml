@@ -81,7 +81,7 @@ grafana:
           
         - name: Loki
           type: loki
-          url: http://loki-gateway:80
+          url: http://monitoring-stack-loki:3100
           access: proxy
   
 
