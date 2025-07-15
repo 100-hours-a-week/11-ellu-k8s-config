@@ -82,5 +82,7 @@ spec:
               value: "always"
             - name: MANAGEMENT_TRACING_SAMPLING_PROBABILITY
               value: "1.0"
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Dotel.java.global-autoconfigure.enabled=true"
             - name: OTEL_PROPAGATORS
               value: "tracecontext,baggage"
