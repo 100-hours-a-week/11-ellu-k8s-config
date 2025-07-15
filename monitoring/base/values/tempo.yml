@@ -49,7 +49,7 @@ distributor:
 
 # 인제스터 설정
 ingester:
-  replicas: 1
+  replicas: 3
   nodeSelector:
     cloud-provider: aws
   resources:
