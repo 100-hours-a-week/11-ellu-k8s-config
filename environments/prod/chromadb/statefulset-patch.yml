@@ -10,3 +10,5 @@ spec:
           env:
             - name: CHROMA_HOST
               value: "chromadb.looper-prod.svc.cluster.local"
+            - name: CHROMA_OTEL_EXPORTER_ENDPOINT
+              value: "http://monitoring-stack-opentelemetry-collector.monitoring.svc.cluster.local:4317"

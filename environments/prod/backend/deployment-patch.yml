@@ -54,6 +54,10 @@ spec:
               value: "true"
             - name: OTEL_INSTRUMENTATION_JDBC_STATEMENT_SANITIZER_ENABLED
               value: "true"
+            - name: OTEL_INSTRUMENTATION_KAFKA_ENABLED
+              value: "true"
+            - name: OTEL_INSTRUMENTATION_REDIS_ENABLED
+              value: "true"
             - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
               value: "health,info,metrics,prometheus,opentelemetry"
             - name: MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS
