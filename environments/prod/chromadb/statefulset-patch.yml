@@ -26,3 +26,5 @@ spec:
               value: "otlp"
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
               value: "grpc"
+            - name: CHROMA_OTEL_GRANULARITY
+              value: "operation"
