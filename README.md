@@ -13,14 +13,14 @@ Looper는 AI 기반 일정 자동화 서비스로 문서와 회의록을 일정�
 ![final_arc](https://github.com/user-attachments/assets/a6df23e7-e743-4aa7-90e3-b8e92dc629eb)
 
 ### 서비스 개요
-- **Frontend**: Next.js 기반 웹 프론트엔드
-- **Backend**: Spring Boot API 서버
-- **AI-Chatbot**: 챗봇 서비스  
-- **AI-Summary**: 문서 요약 및 분석 서비스
-- **VLLM-Server**: LLM 추론 서버 (GPU)
-- **ChromaDB**: 임베딩용 벡터 데이터베이스 
-- **Kafka**: 메시지 스트리밍
-- **Redis**: 인메모리 캐시 및 세션 스토어
+- `Frontend`: Next.js 기반 웹 프론트엔드
+- `Backend`: Spring Boot API 서버
+- `AI-Chatbot`: 챗봇 서비스  
+- `AI-Summary`: 문서 요약 및 분석 서비스
+- `VLLM-Server`: LLM 추론 서버 (GPU)
+- `ChromaDB`: 임베딩용 벡터 데이터베이스 
+- `Kafka`: 메시지 스트리밍
+- `Redis`: 인메모리 캐시 및 세션 스토어
 
 **[서비스 구조도]**
 <img width="1227" height="1386" alt="service_diagram" src="https://github.com/user-attachments/assets/bb73c2ad-0bdc-438e-9f10-d61c155a4e0b" />
@@ -61,7 +61,7 @@ Looper는 AI 기반 일정 자동화 서비스로 문서와 회의록을 일정�
 - **Loki**: 로그 수집 및 분석
 - **OpenTelemetry Collector**: 텔레메트리 데이터 수집
 
-**[모니터링 대시보드 스크린샷]**
+**[Tempo Service Graph]**
 <img width="665" height="536" alt="스크린샷 2025-07-17 오후 1 42 09" src="https://github.com/user-attachments/assets/572a53b4-effe-432b-b877-09d1c29be977" />
 
 ## 디렉토리 구조
