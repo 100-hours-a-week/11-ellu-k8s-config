@@ -9,7 +9,8 @@ Looper는 AI 기반 일정 자동화 서비스로 문서와 회의록을 일정�
 - [서비스 바로가기] (https://looper.my)
 
 ## 시스템 아키텍처
-**[이미지 placeholder: 프로젝트 아키텍처 다이어그램]**
+**[프로젝트 아키텍처 다이어그램]**
+![final_arc](https://github.com/user-attachments/assets/a6df23e7-e743-4aa7-90e3-b8e92dc629eb)
 
 ### 서비스 개요
 - **Frontend**: Next.js 기반 웹 프론트엔드
@@ -21,9 +22,11 @@ Looper는 AI 기반 일정 자동화 서비스로 문서와 회의록을 일정�
 - **Kafka**: 메시지 스트리밍
 - **Redis**: 인메모리 캐시 및 세션 스토어
 
-**[이미지 placeholder: 마이크로서비스 구조도]**
+**[서비스 구조도]**
+<img width="1227" height="1386" alt="service_diagram" src="https://github.com/user-attachments/assets/bb73c2ad-0bdc-438e-9f10-d61c155a4e0b" />
 
 ## 환경 구성
+
 
 ### 디렉토리 구조
 
@@ -47,7 +50,9 @@ Looper는 AI 기반 일정 자동화 서비스로 문서와 회의록을 일정�
 2. **looper-dev-application**: 개발 환경 자동 배포  
 3. **monitoring-stack**: 모니터링 스택 관리
 
-**[이미지 placeholder: GitOps 워크플로우 다이어그램]**
+**[GitOps 워크플로우 다이어그램]**
+![CD_PIPELINE](https://github.com/user-attachments/assets/c8379531-793a-410d-bad7-61153f643a87)
+
 
 ## 모니터링 스택
 - **Prometheus**: 메트릭 수집 및 저장
@@ -56,13 +61,8 @@ Looper는 AI 기반 일정 자동화 서비스로 문서와 회의록을 일정�
 - **Loki**: 로그 수집 및 분석
 - **OpenTelemetry Collector**: 텔레메트리 데이터 수집
 
-**[이미지 placeholder: 모니터링 대시보드 스크린샷]**
-
-### 인프라 특징
-- **멀티 클라우드**: AWS (전반적인 워크로드 배포), GCP (GPU 집약 워크로드)
-- **이벤트 기반**: Kafka를 통한 비동기 통신
-- **확장성**: HPA를 통한 자동 스케일링
-- **보안**: External Secrets(AWS Secretes Manager)를 통한 시크릿 관리
+**[모니터링 대시보드 스크린샷]**
+<img width="665" height="536" alt="스크린샷 2025-07-17 오후 1 42 09" src="https://github.com/user-attachments/assets/572a53b4-effe-432b-b877-09d1c29be977" />
 
 ## 디렉토리 구조
 ```
