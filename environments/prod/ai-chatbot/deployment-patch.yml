@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: ai-chatbot
-          image: ghcr.io/100-hours-a-week/looper-ai-chatbot:1.0.0
+          image: ghcr.io/100-hours-a-week/looper-ai-chatbot:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: OTEL_SERVICE_NAME
