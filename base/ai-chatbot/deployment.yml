@@ -5,6 +5,7 @@ metadata:
   labels:
     app: ai-chatbot
 spec:
+  revisionHistoryLimit: 3
   replicas: 1
   selector:
     matchLabels:
