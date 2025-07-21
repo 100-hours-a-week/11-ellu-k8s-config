@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ai-chatbot
 spec:
-  replicas: 4
+  replicas: 3
   template:
     spec:
       containers:
