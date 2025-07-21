@@ -52,3 +52,17 @@ spec:
                 secretKeyRef:
                   name: ai-chatbot-secrets
                   key: database_url
+            - name: LANGSMITH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ai-chatbot-secrets
+                  key: langsmith-api-key
+            - name: LANGSMITH_PROJECT
+              valueFrom:
+                secretKeyRef:
+                  name: ai-chatbot-secrets
+                  key: langsmith-project
+            - name: LANGSMITH_TRACING
+              value: "true"
+            - name: LANGSMITH_ENDPOINT
+              value: "https://api.smith.langchain.com"
