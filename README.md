@@ -23,7 +23,7 @@ Looper는 AI 기반 일정 자동화 서비스로 회의록 및 문서를 기반
 - `Redis`: 인메모리 캐시 및 세션 스토어
 
 **[서비스 구조도]**
-<img width="1227" height="1386" alt="service_diagram" src="https://github.com/user-attachments/assets/bb73c2ad-0bdc-438e-9f10-d61c155a4e0b" />
+<img width="1344" height="1318" alt="arc (1)" src="https://github.com/user-attachments/assets/ed2552eb-45a7-483a-8d28-e706edfc5f78" />
 
 ## 환경 구성
 
