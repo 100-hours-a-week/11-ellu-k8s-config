@@ -1,5 +1,5 @@
-# 11-ellu-k8s-config
-Ellu's Looper 프로젝트 Kubernetes 메니페스트 리포지토리
+# Ellu's Looper 프로젝트 Kubernetes 메니페스트 리포지토리
+
 
 ## 프로젝트 개요
 Looper는 AI 기반 일정 자동화 서비스로 회의록 및 문서를 기반으로 일정을 자동 생성해주는 서비스입니다.
